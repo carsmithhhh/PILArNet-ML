@@ -1,0 +1,7 @@
+{"time":"2025-05-09T02:37:08.607978243-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/sdf/home/c/carsmith/PILArNet-ML/3d_segment/wandb/run-20250509_023708-1lmpn1kc/logs/debug-core.log"}
+{"time":"2025-05-09T02:37:08.851180011-07:00","level":"INFO","msg":"created new stream","id":"1lmpn1kc"}
+{"time":"2025-05-09T02:37:08.851217051-07:00","level":"INFO","msg":"stream: started","id":"1lmpn1kc"}
+{"time":"2025-05-09T02:37:08.851232361-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"1lmpn1kc"}
+{"time":"2025-05-09T02:37:08.851241911-07:00","level":"INFO","msg":"handler: started","stream_id":"1lmpn1kc"}
+{"time":"2025-05-09T02:37:08.851252681-07:00","level":"INFO","msg":"sender: started","stream_id":"1lmpn1kc"}
+{"time":"2025-05-09T02:37:09.084867675-07:00","level":"INFO","msg":"Starting system monitor"}
