@@ -5,3 +5,4 @@
 {"time":"2025-05-09T02:37:08.851241911-07:00","level":"INFO","msg":"handler: started","stream_id":"1lmpn1kc"}
 {"time":"2025-05-09T02:37:08.851252681-07:00","level":"INFO","msg":"sender: started","stream_id":"1lmpn1kc"}
 {"time":"2025-05-09T02:37:09.084867675-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-09T02:55:24.592883101-07:00","level":"INFO","msg":"api: retrying HTTP error","status":502,"url":"https://api.wandb.ai/files/carsmith-stanford-university/simclr_encoder_pretraining/1lmpn1kc/file_stream","body":"\n<html><head>\n<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<title>502 Server Error</title>\n</head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Server Error</h1>\n<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>\n<h2></h2>\n</body></html>\n"}
