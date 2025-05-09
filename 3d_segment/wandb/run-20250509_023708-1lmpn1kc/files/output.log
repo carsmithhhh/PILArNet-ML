@@ -1,4 +1,0 @@
-test
-Epoch 0/1:  12%|█▏        | 58/500 [00:07<01:04,  6.89it/s, loss=2.2983] 
-[Eval] Epoch final | Loss: 2.1527 | Accuracy: 0.4275
-test
