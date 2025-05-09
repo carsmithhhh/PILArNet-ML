@@ -1,4 +1,4 @@
 test
-Epoch 2/23:  15%|█▌        | 12/78 [01:30<08:23,  7.63s/it, loss=4.6064] 
+Epoch 2/23:  55%|█████▌    | 43/78 [05:27<04:25,  7.58s/it, loss=4.7176] 
 [Eval] Epoch final | Loss: 2.1527 | Accuracy: 0.4275
 test
