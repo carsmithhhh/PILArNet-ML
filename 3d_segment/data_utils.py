@@ -3,6 +3,36 @@ import torch
 from custom_transforms import *
 from torchvision import transforms
 import random
+from torchvision.datasets import MNIST
+from torch.utils.data import Dataset
+import numpy as np
+
+    
+class SimCLRPointCloudDataset(torch.utils.data.Dataset):
+    def __init__(self, base_events, transform, voxel_size=0.01, device="cuda"):
+        self.base_events = base_events  # list of (N, 4) arrays or tensors
+        self.transform = transform
+        self.voxel_size = voxel_size
+        self.device = device
+
+    def __len__(self):
+        return len(self.base_events)
+
+    def __getitem__(self, idx):
+        pc = self.base_events[idx]  # (N, 4)
+
+        x1 = self.transform(pc)
+        x2 = self.transform(pc)
+
+        def to_sparse_tensor(x):
+            x = torch.tensor(x, dtype=torch.float32, device=self.device)
+            coords = torch.floor(x[:, :3] / self.voxel_size).int()
+            feats = x[:, 3:]  # log-energy
+            batch = torch.zeros((coords.shape[0], 1), dtype=torch.int32, device=self.device)
+            coords = torch.cat([batch, coords], dim=1)
+            return ME.SparseTensor(features=feats, coordinates=coords)
+
+        return to_sparse_tensor(x1), to_sparse_tensor(x2)
 
 def compute_train_transform(seed=123456):
     '''
@@ -37,4 +67,42 @@ def compute_test_transform():
     # ])
     # return test_transform
     pass
+
+class MNIST3DExtrudedDataset(Dataset):
+    def __init__(self, root='./data', train=True, download=True, depth=3, voxel_size=1.0, device='cuda'):
+        self.dataset = MNIST(root=root, train=train, download=download, transform=transforms.ToTensor())
+        self.depth = depth
+        self.voxel_size = voxel_size
+        self.device = device
+
+    def __len__(self):
+        return len(self.dataset)
+
+    def __getitem__(self, idx):
+        img, label = self.dataset[idx]     # img: (1, 28, 28), label: int
+        img = img.squeeze(0).numpy()       # (28, 28)
+
+        coords, feats = [], []
+        for z in range(self.depth):
+            ys, xs = np.nonzero(img)
+            intensity = img[ys, xs]        # (N,)
+            coords_z = np.stack([xs, ys, np.full_like(xs, z)], axis=1)  # (N, 3)
+            coords.append(coords_z)
+            feats.append(intensity[:, None])  # (N, 1)
+
+        coords = np.concatenate(coords, axis=0)
+        feats = np.concatenate(feats, axis=0)
+
+        # Quantize coords
+        coords = torch.tensor(coords, dtype=torch.float32)  # (M, 3)
+        coords = torch.floor(coords / self.voxel_size).int()
+
+        batch = torch.zeros((coords.shape[0], 1), dtype=torch.int32)  # single sample per batch
+        coords = torch.cat([batch, coords], dim=1)  # (M, 4)
+        feats = torch.tensor(feats, dtype=torch.float32)
+
+        stensor = ME.SparseTensor(features=feats, coordinates=coords, device=self.device)
+
+        return stensor, label
+
 
