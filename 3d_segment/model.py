@@ -115,7 +115,7 @@ def train_unet(model, train_loader, optimizer, epoch, epochs, temperature=0.07, 
     for p in model.parameters():
         p.requires_grad = True
 
-    log_file_path = os.path.join('./', f'train_loss.txt')
+    log_file_path = os.path.join('./', f'train_loss_no_norm.txt')
     progress = tqdm(train_loader, desc=f"Epoch {epoch}/{epochs}", leave=False, position=0)
 
     total_loss = 0.0
@@ -128,8 +128,8 @@ def train_unet(model, train_loader, optimizer, epoch, epochs, temperature=0.07, 
             out_right = torch.cat([model(x_j) for x_j in x_j_batch], dim=0)
             cosine_sim = F.cosine_similarity(out_left, out_right).mean().item()
 
-            out_left = F.normalize(out_left, dim=1)
-            out_right = F.normalize(out_right, dim=1)       
+            # out_left = F.normalize(out_left, dim=1)
+            # out_right = F.normalize(out_right, dim=1)       
             loss = simclr_loss_vectorized(out_left, out_right, temperature).to(device)
 
             optimizer.zero_grad()
@@ -173,8 +173,8 @@ def mnist_train(encoder, classifier, train_loader, criterion, optimizer, epoch, 
         with torch.no_grad():
             embeddings = torch.cat([encoder(x, return_embedding=True) for x in x_batch], dim=0)
        
-        z = F.normalize(embeddings, dim=1)
-        logits = classifier(z)
+        #z = F.normalize(embeddings, dim=1)
+        logits = classifier(embeddings)
         loss = criterion(logits, y_batch)
 
         optimizer.zero_grad()
@@ -202,8 +202,8 @@ def mnist_evaluate(encoder, classifier, val_loader, criterion, epoch=None, devic
             y_batch = torch.tensor(y_batch, dtype=torch.long, device=device)
 
             embeddings = torch.cat([encoder(x, return_embedding=True) for x in x_batch], dim=0)
-            z = F.normalize(embeddings, dim=1)
-            logits = classifier(z)
+            #z = F.normalize(embeddings, dim=1)
+            logits = classifier(embeddings)
 
             loss = criterion(logits, y_batch)
             total_loss += loss.item() * len(y_batch)

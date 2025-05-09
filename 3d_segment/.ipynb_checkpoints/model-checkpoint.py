@@ -3,7 +3,13 @@ import MinkowskiEngine.MinkowskiFunctional as MF
 from data_utils import *
 import os
 from loss import *
-import tqdm
+from tqdm import tqdm
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+import sys
 
 class ResidualBlock(ME.MinkowskiNetwork):
     def __init__(self, in_channels, out_channels, dimension=3):
@@ -53,10 +59,10 @@ class UNet_Encoder(ME.MinkowskiNetwork): # all layers use Kaiming initialization
         self.block4 = ResidualBlock(in_channels=256, out_channels=512, dimension=3)
         self.gmaxpool = ME.MinkowskiGlobalMaxPooling()
 
-        # projection head for doing contrastive loss 
-        self.proj_linear = ME.MinkowskiLinear(in_features=512, out_features=256)
-        self.proj_bn = ME.MinkowskiBatchNorm(256)
-        self.out_final = ME.MinkowskiLinear(in_features=256, out_features=out_features)
+        # projection head for doing contrastive loss with DENSE tensors
+        self.proj_linear = nn.Linear(512, 256)
+        self.proj_layernorm = nn.LayerNorm(256)
+        self.out_final = nn.Linear(256, out_features)
         
         '''
         simclr projection head:
@@ -66,7 +72,7 @@ class UNet_Encoder(ME.MinkowskiNetwork): # all layers use Kaiming initialization
             nn.Linear(512, feature_dim, bias=True)
         '''
 
-    def forward(self, x):
+    def forward(self, x, return_embedding=False):
         out = MF.relu(self.bn0(self.conv0(x)))
         out = MF.relu(self.bn1(self.conv1(out))) # conv --> bn --> relu
                       
@@ -82,91 +88,135 @@ class UNet_Encoder(ME.MinkowskiNetwork): # all layers use Kaiming initialization
         out4 = self.block4(out3)
         out4 = self.gmaxpool(out4)
 
-        linear_out_1 = self.proj_linear(out4)
-        out5 = MF.relu(self.proj_bn(linear_out_1))
-        final_out = self.out_final(out5)
+        if return_embedding:
+            return out4.F # (dense tensor of shape B, 512) (512 dimensions per point cloud)
 
-        return final_out # for 1 tensor, returns (1, 128) feature vector
+        # dense projection layers
+        x = out4.F  # (1, 512)
+        x = self.proj_linear(x) # (1, 256)
+        x = F.relu(self.proj_layernorm(x)) # (1, 256)
+        final_out = self.out_final(x) 
+
+        return final_out # for 1 tensor, returns (1, 128) feature vector for contrastive loss
+    
+# Classification head for validating embeddings
+class LinearProbe(torch.nn.Module):
+    def __init__(self, out_dim, num_classes):
+        super().__init__()
+        self.classifier = torch.nn.Linear(out_dim, num_classes)
+    
+    def forward(self, x):
+        return self.classifier(x)
     
 # trains unet encoder for 1 epoch
-def train_unet(model, train_loader, train_optimizer: torch.optim.Optimizer, epoch: int, epochs: int, temperature: float = 0.05, voxel_size=0.01, device: str = 'cuda') -> float:
-    # logging
-    log_dir = './'
-    log_file_path = os.path.join(log_dir, f'train_loss.txt')
-
-    model = model.to(device=device)
+def train_unet(model, train_loader, optimizer, epoch, epochs, temperature=0.07, device='cuda'):
+    model = model.to(device)
     model.train()
-    print("Data augmentation")
-    transform = compute_train_transform(seed=45)
+    for p in model.parameters():
+        p.requires_grad = True
 
-    pc_coords = []
-    feats = []
-    sparse_tensors = [] # will contain 2 views of each image in the batch [a, a, b, b, c, c, etc.]
+    log_file_path = os.path.join('./', f'train_loss_no_norm.txt')
+    progress = tqdm(train_loader, desc=f"Epoch {epoch}/{epochs}", leave=False, position=0)
 
-    # making sparse tensors
-    progress = tqdm(train_loader, desc=f'Converting to sparse tensors...', leave=False)
-    for batch in train_loader:
-        for pc in batch['points']:
-            x1, x2 = transform(pc), transform(pc)
-            x1 = torch.tensor(x1, dtype=torch.float32, device=device)
-            x2 = torch.tensor(x2, dtype=torch.float32, device=device)
+    total_loss = 0.0
+    total_num = 0
 
-            pc_coords.append(x1[:, :3]) # separating spatial coords
-            pc_coords.append(x2[:, :3])
-
-            feats.append(x1[:, :3]) # energies for each point cloud
-            feats.append(x2[:, 3:])
-    batch_size = batch['points'].shape[0]
-
-    for i, pc in enumerate(pc_coords):
-        quantized_coords = torch.floor(pc / voxel_size).int()
-        batch_index = torch.full((quantized_coords.shape[0], 1), i, dtype=torch.int32, device=quantized_coords.device)
-        coords_with_batch = torch.cat([batch_index, quantized_coords], dim=1)  # shape (n, 4)
-
-        sparse_tensor = ME.SparseTensor(
-            features=feats[i],           # shape (n, C)
-            coordinates=coords_with_batch      # shape (n, 1 + 3)
-        )
-        sparse_tensors.append(sparse_tensor)
-
-    progress = tqdm(train_loader, desc=f'Epoch {epoch}/{epochs}', leave=False)
-    
     with open(log_file_path, 'a') as log_file:
-        total_num = 0
-        total_loss = 0.0
-        for i in range(len(sparse_tensors) // 2):
-            x_i, x_j = sparse_tensors[i], sparse_tensors[i+1]
-            x_i, x_j = x_i.to(device), x_j.to(device) # maybe redundant??
+        for batch in progress:
+            x_i_batch, x_j_batch = batch  # both are lists of SparseTensors
+            out_left = torch.cat([model(x_i) for x_i in x_i_batch], dim=0)
+            out_right = torch.cat([model(x_j) for x_j in x_j_batch], dim=0)
+            cosine_sim = F.cosine_similarity(out_left, out_right).mean().item()
 
-            out_left, out_right, loss = None, None, None
+            # out_left = F.normalize(out_left, dim=1)
+            # out_right = F.normalize(out_right, dim=1)       
+            loss = simclr_loss_vectorized(out_left, out_right, temperature).to(device)
 
-            # embedding two views of event
-            out_left = model(x_i).to(device)
-            out_right = model(x_j).to(device)
-
-            # evaluating loss
-            loss = simclr_loss_vectorized(out_left, out_right, temperature)
-            loss = loss.to(device)
-
-            train_optimizer.zero_grad()
+            optimizer.zero_grad()
             loss.backward()
-            train_optimizer.step()
+            optimizer.step()
 
-            total_num += batch_size
-            total_loss += loss.item() * batch_size
+            total_loss += loss.item() * len(x_i_batch)
+            total_num += len(x_i_batch)
             avg_loss = total_loss / total_num
-            progress.set_postfix(loss=f'{avg_loss:.4f}')
-            log_file.write(f'{epoch},{i},{avg_loss:.6f}\n')
 
-            if (i+1) % 200 == 0:
-                    torch.save({
-                        'epoch': epoch,
-                        'model_state_dict': model.state_dict(),
-                        'optimizer_state_dict': train_optimizer.state_dict(),
-                        'loss': loss,
-                    }, 'checkpoint.pth')
+            log_file.write(f"{epoch},{total_num},{avg_loss:.6f}, {cosine_sim}\n")
+            log_file.flush()
+            progress.set_postfix(loss=f"{avg_loss:.4f}")
 
     return avg_loss
+
+def mnist_validate(encoder, classifier, train_loader, val_loader, criterion, optimizer, epochs=10, device='cuda'):
+    for epoch in range(epochs):
+        train_loss = mnist_train(encoder, classifier, train_loader, criterion, optimizer, epoch, epochs, device)
+    eval_loss, eval_acc = mnist_evaluate(encoder, classifier, val_loader, criterion, epoch='final')
+    return eval_loss, eval_acc
+    
+
+def mnist_train(encoder, classifier, train_loader, criterion, optimizer, epoch, epochs=5, device='cuda'):
+    encoder.eval()         # freeze encoder
+    for p in encoder.parameters():
+        p.requires_grad = False
+    classifier.train()     # train classifier
+    classifier.to(device)
+
+    total_loss = 0.0
+    total_samples = 0
+
+    progress = tqdm(train_loader, desc=f"Epoch {epoch}/{epochs}", leave=False, position=0)
+
+    for x_batch, y_batch in progress:
+        #x_batch = [x.to(device) for x in x_batch]
+        y_batch = torch.tensor(y_batch, dtype=torch.long, device=device)
+
+        # Get embeddings (no gradients through encoder)
+        with torch.no_grad():
+            embeddings = torch.cat([encoder(x, return_embedding=True) for x in x_batch], dim=0)
+       
+        #z = F.normalize(embeddings, dim=1)
+        logits = classifier(embeddings)
+        loss = criterion(logits, y_batch)
+
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        total_loss += loss.item() * len(y_batch)
+        total_samples += len(y_batch)
+        avg_loss = total_loss / total_samples
+        progress.set_postfix(loss=f"{avg_loss:.4f}")
+
+    return avg_loss
+            
+def mnist_evaluate(encoder, classifier, val_loader, criterion, epoch=None, device='cuda'):
+    encoder.eval()
+    classifier.eval()
+
+    total_loss = 0.0
+    total_correct = 0
+    total_samples = 0
+
+    with torch.no_grad():
+        for x_batch, y_batch in tqdm(val_loader, desc="Evaluating", leave=False):
+            #x_batch = [x.to(device) for x in x_batch]
+            y_batch = torch.tensor(y_batch, dtype=torch.long, device=device)
+
+            embeddings = torch.cat([encoder(x, return_embedding=True) for x in x_batch], dim=0)
+            #z = F.normalize(embeddings, dim=1)
+            logits = classifier(embeddings)
+
+            loss = criterion(logits, y_batch)
+            total_loss += loss.item() * len(y_batch)
+
+            preds = logits.argmax(dim=1)
+            total_correct += (preds == y_batch).sum().item()
+            total_samples += len(y_batch)
+
+    avg_loss = total_loss / total_samples
+    accuracy = total_correct / total_samples
+
+    print(f"[Eval] Epoch {epoch} | Loss: {avg_loss:.4f} | Accuracy: {accuracy:.4f}")
+    return avg_loss, accuracy
         
 
 

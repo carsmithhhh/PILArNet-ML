@@ -7,3 +7,12 @@
 {"time":"2025-05-09T02:37:09.084867675-07:00","level":"INFO","msg":"Starting system monitor"}
 {"time":"2025-05-09T02:55:24.592883101-07:00","level":"INFO","msg":"api: retrying HTTP error","status":502,"url":"https://api.wandb.ai/files/carsmith-stanford-university/simclr_encoder_pretraining/1lmpn1kc/file_stream","body":"\n<html><head>\n<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<title>502 Server Error</title>\n</head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Server Error</h1>\n<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>\n<h2></h2>\n</body></html>\n"}
 {"time":"2025-05-09T03:02:18.202985257-07:00","level":"ERROR","msg":"runconsolelogs: failed to write to file: cursor is at start of file"}
+{"time":"2025-05-09T07:04:44.117588817-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-09T07:04:44.117620966-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-09T07:04:44.711981722-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-09T07:04:45.003557735-07:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-05-09T07:04:45.01083069-07:00","level":"INFO","msg":"stream: closing","id":"1lmpn1kc"}
+{"time":"2025-05-09T07:04:45.010843009-07:00","level":"INFO","msg":"handler: closed","stream_id":"1lmpn1kc"}
+{"time":"2025-05-09T07:04:45.010852849-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":"1lmpn1kc"}
+{"time":"2025-05-09T07:04:45.010859969-07:00","level":"INFO","msg":"sender: closed","stream_id":"1lmpn1kc"}
+{"time":"2025-05-09T07:04:45.010957488-07:00","level":"INFO","msg":"stream: closed","id":"1lmpn1kc"}

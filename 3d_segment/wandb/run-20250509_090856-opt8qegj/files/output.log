@@ -1,0 +1,6 @@
+test
+Epoch 3/3:   4%|▍         | 3/78 [00:27<11:31,  9.22s/it, loss=4.6992]        
+[Eval] Epoch final | Loss: 88642.5929 | Accuracy: 0.5630
+test
+[Eval] Epoch final | Loss: 7013.2594 | Accuracy: 0.6150
+test
