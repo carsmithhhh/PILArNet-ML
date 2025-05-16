@@ -57,47 +57,54 @@ class UNet_Encoder(ME.MinkowskiNetwork): # all layers use Kaiming initialization
         self.bn4 = ME.MinkowskiBatchNorm(256)
         
         self.block4 = ResidualBlock(in_channels=256, out_channels=512, dimension=3)
+        # I also think we don't want max pooling when we train entire UNet together
         self.gmaxpool = ME.MinkowskiGlobalMaxPooling()
 
         # projection head for doing contrastive loss with DENSE tensors
+        # taking away when training full UNet together
         self.proj_linear = nn.Linear(512, 256)
         self.proj_layernorm = nn.LayerNorm(256)
         self.out_final = nn.Linear(256, out_features)
-        
-        '''
-        simclr projection head:
-         nn.Linear(2048, 512, bias=False),
-            nn.BatchNorm1d(512),
-            nn.ReLU(inplace=False),  # good catch!
-            nn.Linear(512, feature_dim, bias=True)
-        '''
 
-    def forward(self, x, return_embedding=False):
-        out = MF.relu(self.bn0(self.conv0(x)))
-        out = MF.relu(self.bn1(self.conv1(out))) # conv --> bn --> relu
-                      
+    def forward(self, x, return_embedding=True): # want to use return_embeddings = True for training whole UNet together
+        feats = []
+
+        out = MF.relu(self.bn0(self.conv0(x))) 
+        feats.append(out) #f32
+
+        out = MF.relu(self.bn1(self.conv1(out))) # conv --> bn --> relu     
         out1 = self.block1(out)
+        feats.append(out1) #f64
         out1 = MF.relu(self.bn2(self.conv2(out1)))
 
         out2 = self.block2(out1)
+        feats.append(out2) #f128
         out2 = MF.relu(self.bn3(self.conv3(out2)))
 
         out3 = self.block3(out2)
+        feats.append(out3) #f256
         out3 = MF.relu(self.bn4(self.conv4(out3)))
 
-        out4 = self.block4(out3)
-        out4 = self.gmaxpool(out4)
+        # removing max pooling
+        out4 = self.block4(out3) # (B, n_points_down3, 512) # relu is applied in residual block
+        # out4 = self.gmaxpool(out4)
+        feats.append(out4) #f512
 
-        if return_embedding:
-            return out4.F # (dense tensor of shape B, 512) (512 dimensions per point cloud)
+        if return_embedding: # do this for training whole UNet!!
+            return out4, feats # (dense tensor of shape B, n_points_down3, 512)
 
         # dense projection layers
-        x = out4.F  # (1, 512)
-        x = self.proj_linear(x) # (1, 256)
-        x = F.relu(self.proj_layernorm(x)) # (1, 256)
-        final_out = self.out_final(x) 
+        else:
+            pooled = self.gmaxpool(out4)
+            proj = F.relu(self.proj_layernorm(self.proj_linear(pooled.F)))
+            return self.out_final(x)
+            # x = out4.F  # (1, 512)
+            # x = self.proj_linear(x) # (1, 256)
+            # x = F.relu(self.proj_layernorm(x)) # (1, 256)
+            # final_out = self.out_final(x) 
 
-        return final_out # for 1 tensor, returns (1, 128) feature vector for contrastive loss
+        # return final_out, feats # for 1 tensor, returns (1, 128) feature vector for contrastive loss
+
     
 # Classification head for validating embeddings
 class LinearProbe(torch.nn.Module):
@@ -107,8 +114,9 @@ class LinearProbe(torch.nn.Module):
     
     def forward(self, x):
         return self.classifier(x)
+
     
-# trains unet encoder for 1 epoch
+# trains unet encoder for 1 epoch with SIMCLR loss
 def train_unet(model, train_loader, optimizer, epoch, epochs, temperature=0.07, device='cuda'):
     model = model.to(device)
     model.train()

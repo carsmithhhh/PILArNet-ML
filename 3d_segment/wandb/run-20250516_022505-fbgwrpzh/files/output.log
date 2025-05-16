@@ -1,0 +1,22 @@
+INFO:data.PILArNet:[rank: 0] self.emin=0.01, self.emax=20.0, self.energy_threshold=0.13, self.remove_low_energy_scatters=True
+[Epoch 1] Validation Loss: 1.6094, Accuracy: 0.1802
+INFO:data.PILArNet:[rank: 0] Building index
+INFO:data.PILArNet:[rank: 0] File /sdf/data/neutrino/carsmith/foundation_models/pilarnet_model/pilarnet/train/generic_v2_116800_v1.h5 not found, using all points
+INFO:data.PILArNet:[rank: 0] File /sdf/data/neutrino/carsmith/foundation_models/pilarnet_model/pilarnet/train/generic_v2_51800_v1.h5 not found, using all points
+INFO:data.PILArNet:[rank: 0] File /sdf/data/neutrino/carsmith/foundation_models/pilarnet_model/pilarnet/train/generic_v2_60200_v1.h5 not found, using all points
+INFO:data.PILArNet:[rank: 0] File /sdf/data/neutrino/carsmith/foundation_models/pilarnet_model/pilarnet/train/generic_v2_64400_v1.h5 not found, using all points
+INFO:data.PILArNet:[rank: 0] File /sdf/data/neutrino/carsmith/foundation_models/pilarnet_model/pilarnet/train/generic_v2_77600_v1.h5 not found, using all points
+INFO:data.PILArNet:[rank: 0] File /sdf/data/neutrino/carsmith/foundation_models/pilarnet_model/pilarnet/train/generic_v2_67000_v1.h5 not found, using all points
+INFO:data.PILArNet:[rank: 0] 437800 point clouds were loaded
+INFO:data.PILArNet:[rank: 0] 6 files were loaded
+INFO:data.PILArNet:[rank: 0] self.emin=0.01, self.emax=20.0, self.energy_threshold=0.13, self.remove_low_energy_scatters=True
+INFO:data.PILArNet:[rank: 0] Building index
+INFO:data.PILArNet:[rank: 0] File /sdf/data/neutrino/carsmith/foundation_models/pilarnet_model/pilarnet/val/generic_v2_10880_v1.h5 not found, using all points
+INFO:data.PILArNet:[rank: 0] 10880 point clouds were loaded
+INFO:data.PILArNet:[rank: 0] 1 files were loaded
+dict_keys(['points', 'lengths', 'semantic_id', 'cluster_id'])
+torch.Size([48, 6588, 4])
+cuda
+Extracting raw events: 100%|██████████| 416/416 [00:17<00:00, 24.10it/s]
+unique batch indices in coords: tensor([0, 1, 2, 3], dtype=torch.int32)
+Autosaving every 120 seconds

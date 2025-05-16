@@ -1,0 +1,16 @@
+{"time":"2025-05-16T02:15:32.535773117-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/sdf/home/c/carsmith/PILArNet-ML/3d_segment/wandb/run-20250516_021532-vfw8y7mp/logs/debug-core.log"}
+{"time":"2025-05-16T02:15:32.77649834-07:00","level":"INFO","msg":"created new stream","id":"vfw8y7mp"}
+{"time":"2025-05-16T02:15:32.77653435-07:00","level":"INFO","msg":"stream: started","id":"vfw8y7mp"}
+{"time":"2025-05-16T02:15:32.77656517-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"vfw8y7mp"}
+{"time":"2025-05-16T02:15:32.776603459-07:00","level":"INFO","msg":"handler: started","stream_id":"vfw8y7mp"}
+{"time":"2025-05-16T02:15:32.776630289-07:00","level":"INFO","msg":"sender: started","stream_id":"vfw8y7mp"}
+{"time":"2025-05-16T02:15:33.023080913-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-16T02:19:10.432701377-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:20:59.318945614-07:00","level":"INFO","msg":"stream: closing","id":"vfw8y7mp"}
+{"time":"2025-05-16T02:20:59.319008744-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-16T02:20:59.319119583-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-16T02:20:59.818726554-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-16T02:21:00.146802516-07:00","level":"INFO","msg":"handler: closed","stream_id":"vfw8y7mp"}
+{"time":"2025-05-16T02:21:00.146843536-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":"vfw8y7mp"}
+{"time":"2025-05-16T02:21:00.146868225-07:00","level":"INFO","msg":"sender: closed","stream_id":"vfw8y7mp"}
+{"time":"2025-05-16T02:21:00.147073843-07:00","level":"INFO","msg":"stream: closed","id":"vfw8y7mp"}

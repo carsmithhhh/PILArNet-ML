@@ -1,0 +1,20 @@
+{"time":"2025-05-16T02:21:32.613392509-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/sdf/home/c/carsmith/PILArNet-ML/3d_segment/wandb/run-20250516_022132-apma6y7p/logs/debug-core.log"}
+{"time":"2025-05-16T02:21:32.861103306-07:00","level":"INFO","msg":"created new stream","id":"apma6y7p"}
+{"time":"2025-05-16T02:21:32.861154595-07:00","level":"INFO","msg":"stream: started","id":"apma6y7p"}
+{"time":"2025-05-16T02:21:32.861193425-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"apma6y7p"}
+{"time":"2025-05-16T02:21:32.861199145-07:00","level":"INFO","msg":"handler: started","stream_id":"apma6y7p"}
+{"time":"2025-05-16T02:21:32.861233804-07:00","level":"INFO","msg":"sender: started","stream_id":"apma6y7p"}
+{"time":"2025-05-16T02:21:33.084486273-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-16T02:21:57.508688585-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:22:16.452043501-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:22:16.527219039-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:22:25.769114546-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:22:25.810915887-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-16T02:22:25.811009966-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-16T02:22:26.264922966-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-16T02:22:26.5275303-07:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-05-16T02:22:26.532555959-07:00","level":"INFO","msg":"stream: closing","id":"apma6y7p"}
+{"time":"2025-05-16T02:22:26.532563969-07:00","level":"INFO","msg":"handler: closed","stream_id":"apma6y7p"}
+{"time":"2025-05-16T02:22:26.532569159-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":"apma6y7p"}
+{"time":"2025-05-16T02:22:26.532606358-07:00","level":"INFO","msg":"sender: closed","stream_id":"apma6y7p"}
+{"time":"2025-05-16T02:22:26.532629278-07:00","level":"INFO","msg":"stream: closed","id":"apma6y7p"}

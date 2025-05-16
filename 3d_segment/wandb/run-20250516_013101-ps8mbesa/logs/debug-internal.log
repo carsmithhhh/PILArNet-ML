@@ -1,0 +1,16 @@
+{"time":"2025-05-16T01:31:02.015799147-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/sdf/home/c/carsmith/PILArNet-ML/3d_segment/wandb/run-20250516_013101-ps8mbesa/logs/debug-core.log"}
+{"time":"2025-05-16T01:31:02.261353255-07:00","level":"INFO","msg":"created new stream","id":"ps8mbesa"}
+{"time":"2025-05-16T01:31:02.261403785-07:00","level":"INFO","msg":"stream: started","id":"ps8mbesa"}
+{"time":"2025-05-16T01:31:02.261424794-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"ps8mbesa"}
+{"time":"2025-05-16T01:31:02.261474684-07:00","level":"INFO","msg":"handler: started","stream_id":"ps8mbesa"}
+{"time":"2025-05-16T01:31:02.261495524-07:00","level":"INFO","msg":"sender: started","stream_id":"ps8mbesa"}
+{"time":"2025-05-16T01:31:02.493849088-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-16T01:31:03.173497622-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T01:31:52.788831962-07:00","level":"INFO","msg":"stream: closing","id":"ps8mbesa"}
+{"time":"2025-05-16T01:31:52.788851271-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-16T01:31:52.788864861-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-16T01:31:53.255572885-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-16T01:31:53.409298316-07:00","level":"INFO","msg":"handler: closed","stream_id":"ps8mbesa"}
+{"time":"2025-05-16T01:31:53.409328255-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":"ps8mbesa"}
+{"time":"2025-05-16T01:31:53.409336315-07:00","level":"INFO","msg":"sender: closed","stream_id":"ps8mbesa"}
+{"time":"2025-05-16T01:31:53.409437684-07:00","level":"INFO","msg":"stream: closed","id":"ps8mbesa"}

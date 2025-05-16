@@ -1,0 +1,18 @@
+{"time":"2025-05-16T02:37:22.290696737-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/sdf/home/c/carsmith/PILArNet-ML/3d_segment/wandb/run-20250516_023722-jac4bf5k/logs/debug-core.log"}
+{"time":"2025-05-16T02:37:22.54723515-07:00","level":"INFO","msg":"created new stream","id":"jac4bf5k"}
+{"time":"2025-05-16T02:37:22.54727911-07:00","level":"INFO","msg":"stream: started","id":"jac4bf5k"}
+{"time":"2025-05-16T02:37:22.547328379-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"jac4bf5k"}
+{"time":"2025-05-16T02:37:22.547362029-07:00","level":"INFO","msg":"sender: started","stream_id":"jac4bf5k"}
+{"time":"2025-05-16T02:37:22.547400788-07:00","level":"INFO","msg":"handler: started","stream_id":"jac4bf5k"}
+{"time":"2025-05-16T02:37:22.755106595-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-16T02:40:59.190787338-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:42:10.59162181-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:42:32.731110696-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:44:54.165672777-07:00","level":"INFO","msg":"stream: closing","id":"jac4bf5k"}
+{"time":"2025-05-16T02:44:54.165696336-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-16T02:44:54.165744086-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-16T02:44:54.620174662-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-16T02:44:54.966403862-07:00","level":"INFO","msg":"handler: closed","stream_id":"jac4bf5k"}
+{"time":"2025-05-16T02:44:54.966460981-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":"jac4bf5k"}
+{"time":"2025-05-16T02:44:54.966466661-07:00","level":"INFO","msg":"sender: closed","stream_id":"jac4bf5k"}
+{"time":"2025-05-16T02:44:54.966616749-07:00","level":"INFO","msg":"stream: closed","id":"jac4bf5k"}

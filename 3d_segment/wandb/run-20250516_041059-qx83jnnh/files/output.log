@@ -1,0 +1,27 @@
+Testing: 100%|██████████| 999/999 [00:22<00:00, 44.67it/s]                             
+[Epoch 1] Training Loss: 0.4951, Accuracy: 0.8966
+[Epoch 1] Validation Loss: 0.2282, Accuracy: 0.9402
+[Epoch 2] Training Loss: 0.1916, Accuracy: 0.9443
+[Epoch 2] Validation Loss: 0.1598, Accuracy: 0.9496
+[Epoch 3] Training Loss: 0.1384, Accuracy: 0.9531
+[Epoch 3] Validation Loss: 0.1368, Accuracy: 0.9499
+[Epoch 4] Training Loss: 0.1002, Accuracy: 0.9649
+[Epoch 4] Validation Loss: 0.1051, Accuracy: 0.9629
+[Epoch 5] Training Loss: 0.0791, Accuracy: 0.9711
+[Epoch 5] Validation Loss: 0.1018, Accuracy: 0.9637
+
+Test Overall Accuracy: 0.9640
+Per-class Accuracy:
+Class 0: 0.9767
+Class 1: 0.9879
+Class 2: 0.0001
+Class 3: 0.5196
+Testing: 100%|██████████| 999/999 [00:22<00:00, 44.88it/s]
+
+Test Overall Accuracy: 0.9640
+Per-class Accuracy:
+Class 0: 0.9767
+Class 1: 0.9879
+Class 2: 0.0001
+Class 3: 0.5196
+defaultdict(<class 'int'>, {0: 5368222, 1: 5827213, 2: 97146, 3: 256371})

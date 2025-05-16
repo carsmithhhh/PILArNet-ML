@@ -1,0 +1,40 @@
+{"time":"2025-05-16T02:25:05.680488625-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/sdf/home/c/carsmith/PILArNet-ML/3d_segment/wandb/run-20250516_022505-fbgwrpzh/logs/debug-core.log"}
+{"time":"2025-05-16T02:25:05.928381779-07:00","level":"INFO","msg":"created new stream","id":"fbgwrpzh"}
+{"time":"2025-05-16T02:25:05.928415988-07:00","level":"INFO","msg":"stream: started","id":"fbgwrpzh"}
+{"time":"2025-05-16T02:25:05.928480848-07:00","level":"INFO","msg":"sender: started","stream_id":"fbgwrpzh"}
+{"time":"2025-05-16T02:25:05.928469148-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"fbgwrpzh"}
+{"time":"2025-05-16T02:25:05.928488297-07:00","level":"INFO","msg":"handler: started","stream_id":"fbgwrpzh"}
+{"time":"2025-05-16T02:25:06.172265513-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-16T02:25:28.888053088-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:28.908020077-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:28.90865542-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:28.911303784-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:28.922145715-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:28.924497981-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:28.932837837-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:28.935854917-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:28.971177941-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:28.974062672-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:29.01790311-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:29.021310956-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:29.022778611-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:29.028413295-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:46.369842506-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:46.373759006-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:46.380947274-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:46.384083222-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:46.384750026-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:46.387658256-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:46.388832975-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:46.393028302-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:46.46875812-07:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-05-16T02:25:46.478577491-07:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-05-16T02:25:46.502586819-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-16T02:25:46.502641759-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-16T02:25:46.914924257-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-16T02:25:47.169437474-07:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-05-16T02:25:47.175704611-07:00","level":"INFO","msg":"stream: closing","id":"fbgwrpzh"}
+{"time":"2025-05-16T02:25:47.175722421-07:00","level":"INFO","msg":"handler: closed","stream_id":"fbgwrpzh"}
+{"time":"2025-05-16T02:25:47.175746541-07:00","level":"INFO","msg":"sender: closed","stream_id":"fbgwrpzh"}
+{"time":"2025-05-16T02:25:47.175735121-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":"fbgwrpzh"}
+{"time":"2025-05-16T02:25:47.17584774-07:00","level":"INFO","msg":"stream: closed","id":"fbgwrpzh"}

@@ -1,0 +1,10 @@
+Testing: 100%|██████████| 999/999 [00:22<00:00, 45.13it/s]                             
+[Epoch 1] Training Loss: 0.5005, Accuracy: 0.9012
+[Epoch 1] Validation Loss: 0.2116, Accuracy: 0.9458
+
+Test Overall Accuracy: 0.9461
+Per-class Accuracy:
+Class 0: 0.9640
+Class 1: 0.9870
+Class 2: 0.0000
+Class 3: 0.0000

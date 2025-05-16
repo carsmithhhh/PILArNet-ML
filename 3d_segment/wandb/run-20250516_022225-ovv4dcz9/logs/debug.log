@@ -1,0 +1,21 @@
+2025-05-16 02:22:25,808 INFO    MainThread:3855694 [wandb_init.py:setup_run_log_directory():662] Logging user logs to /sdf/home/c/carsmith/PILArNet-ML/3d_segment/wandb/run-20250516_022225-ovv4dcz9/logs/debug.log
+2025-05-16 02:22:25,808 INFO    MainThread:3855694 [wandb_init.py:setup_run_log_directory():663] Logging internal logs to /sdf/home/c/carsmith/PILArNet-ML/3d_segment/wandb/run-20250516_022225-ovv4dcz9/logs/debug-internal.log
+2025-05-16 02:22:25,808 INFO    MainThread:3855694 [wandb_init.py:init():781] calling init triggers
+2025-05-16 02:22:25,808 INFO    MainThread:3855694 [wandb_init.py:init():786] wandb.init called with sweep_config: {}
+config: {'epochs': 1, 'batch_size': 128, 'lr': 0.0001, '_wandb': {}}
+2025-05-16 02:22:25,808 INFO    MainThread:3855694 [wandb_init.py:init():798] finishing previous run: apma6y7p
+2025-05-16 02:22:26,532 INFO    MainThread:3855694 [wandb_init.py:init():809] starting backend
+2025-05-16 02:22:26,532 INFO    MainThread:3855694 [wandb_init.py:init():813] sending inform_init request
+2025-05-16 02:22:26,534 INFO    MainThread:3855694 [backend.py:_multiprocessing_setup():101] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2025-05-16 02:22:26,534 INFO    MainThread:3855694 [wandb_init.py:init():823] backend started and connected
+2025-05-16 02:22:26,539 INFO    MainThread:3855694 [wandb_run.py:_label_probe_notebook():1267] probe notebook
+2025-05-16 02:22:26,540 INFO    MainThread:3855694 [wandb_run.py:_label_probe_notebook():1277] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2025-05-16 02:22:26,540 INFO    MainThread:3855694 [wandb_init.py:init():915] updated telemetry
+2025-05-16 02:22:26,582 INFO    MainThread:3855694 [wandb_init.py:init():939] communicating run to backend with 90.0 second timeout
+2025-05-16 02:22:27,064 INFO    MainThread:3855694 [wandb_init.py:init():1014] starting run threads in backend
+2025-05-16 02:22:27,477 INFO    MainThread:3855694 [wandb_run.py:_console_start():2454] atexit reg
+2025-05-16 02:22:27,477 INFO    MainThread:3855694 [wandb_run.py:_redirect():2306] redirect: wrap_raw
+2025-05-16 02:22:27,477 INFO    MainThread:3855694 [wandb_run.py:_redirect():2371] Wrapping output streams.
+2025-05-16 02:22:27,477 INFO    MainThread:3855694 [wandb_run.py:_redirect():2394] Redirects installed.
+2025-05-16 02:22:27,478 INFO    MainThread:3855694 [wandb_init.py:init():1056] run started, returning control to user process
+2025-05-16 02:22:27,585 INFO    MainThread:3855694 [wandb_watch.py:_watch():71] Watching

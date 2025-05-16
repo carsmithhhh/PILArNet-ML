@@ -1,0 +1,18 @@
+Testing: 100%|██████████| 999/999 [00:22<00:00, 45.31it/s]                             
+[Epoch 1] Training Loss: 0.4670, Accuracy: 0.9047
+[Epoch 1] Validation Loss: 0.1897, Accuracy: 0.9462
+[Epoch 2] Training Loss: 0.1686, Accuracy: 0.9501
+[Epoch 2] Validation Loss: 0.1316, Accuracy: 0.9563
+[Epoch 3] Training Loss: 0.1160, Accuracy: 0.9618
+[Epoch 3] Validation Loss: 0.1105, Accuracy: 0.9614
+[Epoch 4] Training Loss: 0.0862, Accuracy: 0.9691
+[Epoch 4] Validation Loss: 0.1031, Accuracy: 0.9634
+[Epoch 5] Training Loss: 0.0677, Accuracy: 0.9739
+[Epoch 5] Validation Loss: 0.0941, Accuracy: 0.9658
+
+Test Overall Accuracy: 0.9661
+Per-class Accuracy:
+Class 0: 0.9770
+Class 1: 0.9885
+Class 2: 0.0000
+Class 3: 0.5922

@@ -1,0 +1,7 @@
+                                                   
+coords_batch_shape: 9506
+labels_batch shape: 9506
+sparse tensor shape: 9506
+coords_batch_shape: 14074
+labels_batch shape: 14074
+sparse tensor shape: 14074
