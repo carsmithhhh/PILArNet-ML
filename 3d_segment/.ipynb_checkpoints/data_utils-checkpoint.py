@@ -9,31 +9,36 @@ import numpy as np
 
     
 class SimCLRPointCloudDataset(torch.utils.data.Dataset):
-    def __init__(self, base_events, transform, device="cuda"):
-        self.base_events = base_events  # list of (N, 4) arrays or tensors
+    def __init__(self, point_clouds, transform, device="cuda"):
+        self.point_clouds = point_clouds  # list of (N, 4) arrays or tensors
         self.transform = transform
         self.device = device
         np.random.seed(42)
 
     def __len__(self):
-        return len(self.base_events)
+        return len(self.point_clouds)
 
     def __getitem__(self, idx):
-        pc = self.base_events[idx]  # (N, 4)
+        pc = self.point_clouds[idx]  # (N, 4)
 
-        x1 = self.transform(pc)
-        x2 = self.transform(pc)
+        x1 = self.transform(pc) # (N, 4)
+        x2 = self.transform(pc) # (N, 4)
 
-        def to_sparse_tensor(x):
-            x = torch.tensor(x, dtype=torch.float32, device=self.device)
-            coords = x[:, :3]
-            coords = coords.floor().int()
-            feats = x[:, 3:]  # log-energy
-            batch = torch.zeros((coords.shape[0], 1), dtype=torch.int32, device=self.device)
-            coords = torch.cat([batch, coords], dim=1)
-            return ME.SparseTensor(features=feats, coordinates=coords)
+        coords1, coords2 = x1[:, :3], x2[:, :3]
+        feats1, feats2 = x1[:, 3:], x2[:, 3:] # energy
 
-        return to_sparse_tensor(x1), to_sparse_tensor(x2)
+        coords1 = torch.tensor(coords1, dtype=torch.float32)
+        coords2 = torch.tensor(coords2, dtype=torch.float32)
+        coords1 = coords1.floor().int() # already voxelized
+        coords2 = coords2.floor().int()
+        feats1 = torch.tensor(feats1, dtype=torch.float32)
+        feats2 = torch.tensor(feats2, dtype=torch.float32)
+
+        # batch = torch.zeros((coords1.shape[0], 1), dtype=torch.int32)  # single batch index
+        # coords1_full = torch.cat([batch, coords1], dim=1)  # (N, 4)
+        # coords2_full = torch.cat([batch, coords2], dim=1)  # (N, 4)
+
+        return coords1, coords2, feats1, feats2
     
 class PilarnetDataset(torch.utils.data.Dataset): # returns dataset on cpu
     def __init__(self, point_clouds, ground_truth_ids):
@@ -44,50 +49,25 @@ class PilarnetDataset(torch.utils.data.Dataset): # returns dataset on cpu
     def __len__(self):
         return len(self.point_clouds)
 
-    # def __getitem__(self, idx):
-    #     pc = self.point_clouds[idx]  # (N, 4)
-    #     labels = self.ground_truth_ids[idx]  # (N,)
-
-    #     coords = pc[:, :3]
-    #     coords = torch.tensor(coords, dtype=torch.float32)  # (N, 3)
-    #     coords = coords.floor().int()
-    #     feats  = pc[:, 3:]  # (N, 1) log-energy or other feature
-
-    #     feats  = torch.tensor(feats, dtype=torch.float32)   # (N, C)
-    #     labels = torch.tensor(labels, dtype=torch.long)     # (N, 1)
-
-        
-    #     # batch = torch.zeros((coords.shape[0], 1), dtype=torch.int32)
-    #     # coords = torch.cat([batch, coords], dim=1)
-
-    #     # sparse_tensor = ME.SparseTensor(features=feats, coordinates=coords)
-
-    #     return coords, feats, labels
     def __getitem__(self, idx):
         pc = self.point_clouds[idx]  # (N, 4)
+        # length = self.lengths[idx]
+        # pc = self.point_clouds[idx][:length] # (N, 4)
         labels = self.labels[idx]    # (N,)
     
         coords = pc[:, :3]
-        feats  = pc[:, 3:]
+        feats  = pc[:, 3:] # energy
     
         coords = torch.tensor(coords, dtype=torch.float32)
         feats  = torch.tensor(feats, dtype=torch.float32)
         labels = torch.tensor(labels, dtype=torch.long)
     
-        # Voxelize
+        # already voxelized
         coords = coords.floor().int()
-        # coords = torch.floor(coords / self.voxel_size).int()
         batch = torch.zeros((coords.shape[0], 1), dtype=torch.int32)  # single batch index
         coords_full = torch.cat([batch, coords], dim=1)  # (N, 4)
     
-        # Deduplicate using ME
-        unique_coords, unique_indices = ME.utils.sparse_quantize(coords_full, return_index=True)
-    
-        coords = coords[unique_indices]
-        feats  = feats[unique_indices]
-        labels = labels[unique_indices]
-    
-        return coords, feats, labels
+        return coords, feats, labels # why not coords_full? seems to be working anyways....
 
 def compute_train_transform(seed=123456):
     '''
@@ -146,18 +126,20 @@ class MNIST3DExtrudedDataset(Dataset):
             feats.append(intensity[:, None])  # (N, 1)
 
         coords = np.concatenate(coords, axis=0)
+
         feats = np.concatenate(feats, axis=0)
 
         # Quantize coords
         coords = torch.tensor(coords, dtype=torch.float32)  # (M, 3)
         coords = torch.floor(coords / self.voxel_size).int()
 
-        batch = torch.zeros((coords.shape[0], 1), dtype=torch.int32)  # single sample per batch
-        coords = torch.cat([batch, coords], dim=1)  # (M, 4)
+
+        # batch = torch.zeros((coords.shape[0], 1), dtype=torch.int32)  # single sample per batch
+        # coords = torch.cat([batch, coords], dim=1)  # (M, 4)
         feats = torch.tensor(feats, dtype=torch.float32)
 
-        stensor = ME.SparseTensor(features=feats, coordinates=coords, device=self.device)
+        # stensor = ME.SparseTensor(features=feats, coordinates=coords, device=self.device)
 
-        return stensor, label
+        return coords, feats, label
 
 

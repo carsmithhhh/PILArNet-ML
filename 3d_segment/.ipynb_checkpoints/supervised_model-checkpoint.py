@@ -71,7 +71,7 @@ class UNet_Decoder(ME.MinkowskiNetwork):
         x = self.up2(x, encoder_feats[-3])  # → f128
         x = self.up3(x, encoder_feats[-4])  # → f64
         x = self.up4(x, encoder_feats[-5])  # → f32
-        x = self.up5(x, None)               # no skip for last block
+        x = self.up5(x, None)               # no skip connection for last block
 
         return x
     
@@ -173,7 +173,7 @@ def supervised_val_unet(model, val_loader, criterion, epoch=None, device='cuda')
             total_loss += loss.item() * labels_batch.size(0)
             total_num += labels_batch.size(0)
 
-            # Optional: track predictions for metrics
+            # maybe: track predictions for metrics
             preds = logits.argmax(dim=1)
             all_preds.append(preds.cpu())
             all_labels.append(labels_batch.cpu())
@@ -181,7 +181,7 @@ def supervised_val_unet(model, val_loader, criterion, epoch=None, device='cuda')
             avg_loss = total_loss / total_num
             progress.set_postfix(val_loss=f"{avg_loss:.4f}")
 
-    # Concatenate predictions and labels for evaluation
+    # concatenate predictions and labels for evaluation
     all_preds = torch.cat(all_preds, dim=0)
     all_labels = torch.cat(all_labels, dim=0)
 
@@ -215,14 +215,13 @@ def test_supervised_unet(model, test_loader, num_classes=4, ignore_index=-1, dev
             labels_batch = labels_batch.view(-1)
 
             logits = model(points_batch).F  # (N, num_classes)
-            preds = logits.argmax(dim=1)    # (N,)
+            preds = logits.argmax(dim=1) # (N,)
 
-            # Apply mask to ignore unlabeled voxels
             valid_mask = labels_batch != ignore_index
             preds = preds[valid_mask]
             labels = labels_batch[valid_mask]
 
-            # Accumulate correct predictions per class
+            # accumulate correct predictions per class
             for c in range(num_classes):
                 class_mask = labels == c
                 class_total[c] += class_mask.sum().item()
@@ -231,13 +230,13 @@ def test_supervised_unet(model, test_loader, num_classes=4, ignore_index=-1, dev
             total_correct += (preds == labels).sum().item()
             total_count += labels.size(0)
 
-    # Compute final accuracies
+    #  final accuracies
     class_accuracies = {}
     for c in range(num_classes):
         if class_total[c] > 0:
             class_accuracies[c] = class_correct[c] / class_total[c]
         else:
-            class_accuracies[c] = float('nan')  # Handle unused classes
+            class_accuracies[c] = float('nan')  # incase of unused classes
 
     overall_accuracy = total_correct / total_count if total_count > 0 else 0.0
 
